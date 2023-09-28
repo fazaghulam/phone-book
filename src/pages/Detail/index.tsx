@@ -76,11 +76,9 @@ const Detail: React.FC = () => {
       <Name>
         {data?.contact_by_pk.first_name} {data?.contact_by_pk.last_name}
       </Name>
-      <DetailCard
-        first_name={data?.contact_by_pk.first_name!}
-        last_name={data?.contact_by_pk.last_name!}
-        phones={data?.contact_by_pk.phones!}
-      />
+      <DetailCard title="First Name" value={data?.contact_by_pk.first_name!} />
+      <DetailCard title="Last Name" value={data?.contact_by_pk.last_name!} />
+      <DetailCard title="Phone Number" phone={data?.contact_by_pk.phones!} />
       <BtnContainer>
         <Button type="edit" label="Edit" icon={<img alt="edit" src={EditIcon} />} />
         <Button type="delete" label="Delete" icon={<img alt="del" src={DeleteIcon} />} />
