@@ -11,7 +11,7 @@ import ListCard from "../../components/listCard";
 import { BtnAdd, Container, Header, SubHeader, StyledLink } from "./contact.style";
 import SearchBar from "../../components/searchbar";
 
-interface Contact {
+interface data {
   first_name: string;
   id: number;
   last_name: string;
@@ -21,7 +21,7 @@ interface Contact {
 }
 
 interface ContactData {
-  contact: Contact[];
+  contact: data[];
 }
 
 const GET_CONTACT = gql`
@@ -38,7 +38,9 @@ const GET_CONTACT = gql`
 `;
 
 const Contact: React.FC = () => {
-  const { data, loading, error } = useQuery<ContactData>(GET_CONTACT);
+  const { data, loading, error } = useQuery<ContactData>(GET_CONTACT, {
+    fetchPolicy: "network-only",
+  });
   const [searchValue, setSearchValue] = useState<string>("");
   const handleSearchChange = (value: string) => {
     setSearchValue(value);

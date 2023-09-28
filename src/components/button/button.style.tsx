@@ -22,6 +22,8 @@ export const styles = (props: styleProps) => css`
     ? `background-color: #2031BD; &:hover { background-color: #6473F4;}`
     : props.bgtype === "edit"
     ? `background-color: #0065D2; &:hover { background-color: #4EA3FF;}`
+    : props.bgtype === "save"
+    ? `background-color: #0065D2; &:hover { background-color: #4EA3FF;}`
     : props.bgtype === "delete"
     ? `background-color: #FF3346; &:hover { background-color: #F39099;}`
     : ``}
