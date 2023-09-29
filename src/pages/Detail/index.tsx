@@ -4,6 +4,7 @@ import { jsx, css } from "@emotion/react";
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
+import Swal from "sweetalert2";
 import { Container, Name, NavText, BtnContainer, StyledLink } from "./detail.style";
 import Profilpic from "../../components/profilpic";
 import DetailCard from "../../components/detailCard";
@@ -58,24 +59,39 @@ const Detail: React.FC = () => {
   const { data, loading } = useQuery<ContactData>(GET_DETAIL, { variables: { id: id } });
   const [deleteContact] = useMutation(DELETE_CONTACT, {
     variables: { id: id }, // Convert id to an integer
-    onError: (error) => {
-      // Handle error here if the mutation fails
-      console.error("Delete failed:", error);
+    onError: () => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Try again",
+        timer: 1500,
+      });
     },
     onCompleted: () => {
-      // Handle successful deletion here, e.g., navigate back to the list of contacts
       navigate("/");
-      console.log("Contact deleted successfully");
-      // You can use a navigation library like react-router-dom to navigate back to the contact list page
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        timer: 1500,
+      });
     },
   });
 
   const handleDelete = () => {
-    // Show a confirmation dialog to confirm deletion
-    const confirmDelete = window.confirm("Are you sure you want to delete this contact?");
-    if (confirmDelete) {
-      deleteContact();
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteContact();
+      }
+    });
   };
 
   if (loading) {

@@ -4,6 +4,7 @@ import { css, jsx } from "@emotion/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "rc-pagination";
+import Swal from "sweetalert2";
 import "rc-pagination/assets/index.css";
 import { useQuery, gql } from "@apollo/client";
 import ChevronUp from "../../assets/chevron-up-icon.svg";
@@ -57,9 +58,12 @@ const Contact: React.FC = () => {
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>, cardId: number) => {
     e.preventDefault();
     if (selectedCards.length >= 5 && !selectedCards.includes(cardId)) {
-      // You can show a message or notification here indicating the limit is reached.
-      // For example, you can set a state to show a message to the user.
-      // setErrorMsg("You can only have up to 10 favorite contacts.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "You reach maximum 5 favorite contacts",
+        timer: 1500,
+      });
       return;
     } else {
       if (!selectedCards.includes(cardId)) {

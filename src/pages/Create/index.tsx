@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { css, jsx } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
+import Swal from "sweetalert2";
 import { Container, StyledLink, NavText, BtnContainer } from "./create.style";
 import Profilpic from "../../components/profilpic";
 import ChevronLeft from "../../assets/chevron-left-icon.svg";
@@ -80,7 +81,11 @@ const Create: React.FC = () => {
   const handleSave = async () => {
     try {
       if (!isValidName(firstName) || !isValidName(lastName)) {
-        console.error("First name and last name should only contain letters and spaces.");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "First name and last name should only contain letters and spaces",
+        });
         return;
       }
       const isDuplicate = data?.contact.some(
@@ -90,9 +95,11 @@ const Create: React.FC = () => {
       );
 
       if (isDuplicate) {
-        // Show an error message and prevent adding the contact
-        console.error("Contact with the same name and phone number already exists.");
-        // Optionally, you can set an error state and display the error message to the user.
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Contact with the same first name or phone number already exists",
+        });
         return;
       }
 
@@ -104,8 +111,19 @@ const Create: React.FC = () => {
         },
       });
       navigate("/");
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "New contact has been created",
+        timer: 1500,
+      });
     } catch (error) {
-      console.error("Error adding contact:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Try again",
+        timer: 1500,
+      });
     }
   };
 

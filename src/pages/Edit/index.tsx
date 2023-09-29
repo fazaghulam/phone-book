@@ -4,12 +4,14 @@ import { jsx, css } from "@emotion/react";
 import React, { useEffect, useState } from "react";
 import { useMutation, useSuspenseQuery, gql } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { BtnContainer, Container, Name, NavText, StyledLink } from "./edit.style";
 import Button from "../../components/button";
 import Profilpic from "../../components/profilpic";
 import InputCard from "../../components/inputCard";
 import ChevronLeft from "../../assets/chevron-left-icon.svg";
 import EditIcon from "../../assets/edit-icon.svg";
+import CancelIcon from "../../assets/cancel-icon.svg";
 
 type Params = {
   id: string;
@@ -122,9 +124,7 @@ const Edit: React.FC = () => {
           });
         }
       }
-    } catch (error) {
-      console.error("Error saving phone numbers", error);
-    }
+    } catch (error) {}
   };
 
   const handleUpdateContact = async () => {
@@ -140,8 +140,19 @@ const Edit: React.FC = () => {
       });
       handleSave();
       navigate("/");
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Your file has been updated.",
+        timer: 1500,
+      });
     } catch (e) {
-      console.error("Error update Contact", e);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Try again",
+        timer: 1500,
+      });
     }
   };
 
@@ -194,6 +205,7 @@ const Edit: React.FC = () => {
       </div>
       <BtnContainer>
         <Button type="save" label="Save" onClick={handleUpdateContact} icon={<img alt="save" src={EditIcon} />} />
+        <Button type="delete" label="Cancel" onClick={() => navigate("/")} icon={<img alt="del" src={CancelIcon} />} />
       </BtnContainer>
     </Container>
   );
