@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import Swal from "sweetalert2";
-import { Container, StyledLink, NavText, BtnContainer } from "./create.style";
+import { Container, StyledLink, NavText, BtnContainer, Name } from "./create.style";
 import Profilpic from "../../components/profilpic";
 import ChevronLeft from "../../assets/chevron-left-icon.svg";
 import EditIcon from "../../assets/edit-icon.svg";
@@ -151,15 +151,17 @@ const Create: React.FC = () => {
       >
         <Profilpic size={110} />
       </div>
+      <Name>
+        {firstName} {lastName}
+      </Name>
       <div
         css={css`
           display: grid;
-          justify-content: center;
         `}
       >
         <InputCard placeHolder="First Name" textInputChange={handleFirstName} />
         <InputCard placeHolder="Last Name" textInputChange={handleLastName} />
-        <InputCard placeHolder="+62xxx" textInputChange={handlePhoneNumber} />
+        <InputCard placeHolder="08xxx" textInputChange={handlePhoneNumber} />
       </div>
       <BtnContainer>
         <Button type="save" label="Save" onClick={handleSave} icon={<img alt="save" src={EditIcon} />} />

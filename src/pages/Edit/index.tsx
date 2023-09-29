@@ -183,7 +183,11 @@ const Edit: React.FC = () => {
       <Name>
         {firstName} {lastName}
       </Name>
-      <div>
+      <div
+        css={css`
+          display: grid;
+        `}
+      >
         <InputCard
           placeHolder="First Name"
           value={data?.contact_by_pk.first_name}

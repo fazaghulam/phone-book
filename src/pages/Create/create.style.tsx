@@ -5,6 +5,16 @@ export const Container = styled.div`
   padding: 28px;
 `;
 
+export const Name = styled.p`
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 110% */
+  text-align: center;
+  margin-bottom: 35px;
+`;
+
 export const NavText = styled.p`
   font-size: 14px;
   font-style: normal;

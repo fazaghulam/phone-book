@@ -24,11 +24,7 @@ const InputCard = (props: inputCardProps) => {
     }
   }, []);
 
-  return (
-    <div>
-      <Input type="text" id="input" placeholder={props.placeHolder} value={inputValue} onChange={handleInputChange} />
-    </div>
-  );
+  return <Input type="text" id="input" placeholder={props.placeHolder} value={inputValue} onChange={handleInputChange} />;
 };
 
 export default InputCard;
