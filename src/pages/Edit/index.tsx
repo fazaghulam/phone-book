@@ -98,7 +98,6 @@ const Edit: React.FC = () => {
       );
     }
   }, [data]);
-  console.log(firstName);
 
   const handleInputChange = (id: number, value: string) => {
     const updatedInputFields = inputFields?.map((field) => (field.id == id ? { ...field, number: value } : field));
