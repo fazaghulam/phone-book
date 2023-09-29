@@ -98,6 +98,7 @@ const Edit: React.FC = () => {
       );
     }
   }, [data]);
+  console.log(firstName);
 
   const handleInputChange = (id: number, value: string) => {
     const updatedInputFields = inputFields?.map((field) => (field.id == id ? { ...field, number: value } : field));
@@ -173,8 +174,16 @@ const Edit: React.FC = () => {
         {firstName} {lastName}
       </Name>
       <div>
-        <InputCard placeHolder="First Name" value={firstName} textInputChange={(e: string) => setFirstName(e)} />
-        <InputCard placeHolder="Last Name" value={lastName} textInputChange={(e: string) => setLastName(e)} />
+        <InputCard
+          placeHolder="First Name"
+          value={data?.contact_by_pk.first_name}
+          textInputChange={(e: string) => setFirstName(e)}
+        />
+        <InputCard
+          placeHolder="Last Name"
+          value={data?.contact_by_pk.last_name}
+          textInputChange={(e: string) => setLastName(e)}
+        />
         {inputFields?.map((input, idx) => (
           <InputCard
             key={idx}
