@@ -3,13 +3,26 @@
 import React, { useState } from "react";
 import { css, jsx } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
-import { useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { Container, StyledLink, NavText, BtnContainer } from "./create.style";
 import Profilpic from "../../components/profilpic";
 import ChevronLeft from "../../assets/chevron-left-icon.svg";
 import EditIcon from "../../assets/edit-icon.svg";
 import Button from "../../components/button";
 import InputCard from "../../components/inputCard";
+
+interface data {
+  first_name: string;
+  id: number;
+  last_name: string;
+  phones: {
+    number: string;
+  }[];
+}
+
+interface ContactData {
+  contact: data[];
+}
 
 const ADD_CONTACT = gql`
   mutation AddContactWithPhones($first_name: String!, $last_name: String!, $phones: [phone_insert_input!]!) {
@@ -26,9 +39,23 @@ const ADD_CONTACT = gql`
   }
 `;
 
+const GET_CONTACT = gql`
+  query GetContactList {
+    contact {
+      first_name
+      id
+      last_name
+      phones {
+        number
+      }
+    }
+  }
+`;
+
 const Create: React.FC = () => {
   const navigate = useNavigate();
 
+  const { data } = useQuery<ContactData>(GET_CONTACT);
   const [addContact] = useMutation(ADD_CONTACT);
 
   const [firstName, setFirstName] = useState<string>("");
@@ -45,9 +72,30 @@ const Create: React.FC = () => {
     setPhoneNumber(value);
   };
 
+  const isValidName = (name: string) => {
+    const regex = /^[A-Za-z\s]+$/;
+    return regex.test(name);
+  };
+
   const handleSave = async () => {
     try {
-      // Execute the mutation with variables
+      if (!isValidName(firstName) || !isValidName(lastName)) {
+        console.error("First name and last name should only contain letters and spaces.");
+        return;
+      }
+      const isDuplicate = data?.contact.some(
+        (contact) =>
+          contact.first_name.toLowerCase() === firstName.toLowerCase() ||
+          contact.phones.some((phone) => phone.number === phoneNumber)
+      );
+
+      if (isDuplicate) {
+        // Show an error message and prevent adding the contact
+        console.error("Contact with the same name and phone number already exists.");
+        // Optionally, you can set an error state and display the error message to the user.
+        return;
+      }
+
       await addContact({
         variables: {
           first_name: firstName,
@@ -56,10 +104,8 @@ const Create: React.FC = () => {
         },
       });
       navigate("/");
-      // Optionally, you can handle success or navigate to another page here
     } catch (error) {
       console.error("Error adding contact:", error);
-      // Handle error appropriately
     }
   };
 
