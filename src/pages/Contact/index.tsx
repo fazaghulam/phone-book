@@ -39,7 +39,7 @@ const GET_CONTACT = gql`
 `;
 
 const Contact: React.FC = () => {
-  const { data, loading, error } = useQuery<ContactData>(GET_CONTACT, { fetchPolicy: "network-only" });
+  const { data, loading } = useQuery<ContactData>(GET_CONTACT, { fetchPolicy: "network-only" });
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [favContactsVisible, setFavContactsVisible] = useState(true);

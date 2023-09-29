@@ -22,7 +22,7 @@ const InputCard = (props: inputCardProps) => {
     if (props.value) {
       setInputValue(props.value);
     }
-  });
+  }, []);
 
   return (
     <div>
