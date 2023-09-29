@@ -1,12 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "rc-pagination";
 import Swal from "sweetalert2";
 import "rc-pagination/assets/index.css";
 import { useQuery, gql } from "@apollo/client";
+import { getSessionStorageItem, setSessionStorageItem } from "../../utils/sessionStorage";
 import ChevronUp from "../../assets/chevron-up-icon.svg";
 import ChevronDown from "../../assets/chevron-down-icon.svg";
 import ListCard from "../../components/listCard";
@@ -75,6 +76,19 @@ const Contact: React.FC = () => {
       }
     }
   };
+
+  // Load favorite contacts from sessionStorage when the component mounts
+  useEffect(() => {
+    const savedFavoriteContacts = getSessionStorageItem<number[]>("favoriteContacts");
+    if (savedFavoriteContacts) {
+      setSelectedCards(savedFavoriteContacts);
+    }
+  }, []);
+
+  // Update favorite contacts in sessionStorage when it changes
+  useEffect(() => {
+    setSessionStorageItem("favoriteContacts", selectedCards);
+  }, [selectedCards]);
 
   const filteredData = data?.contact.filter((contact) =>
     `${contact.first_name} ${contact.last_name}`.toLowerCase().includes(searchValue.toLowerCase())
