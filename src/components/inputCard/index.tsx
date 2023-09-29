@@ -2,10 +2,11 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { Input } from "./inputCard.style";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface inputCardProps {
-  placeHolder: string;
+  value?: string;
+  placeHolder?: string;
   textInputChange: (value: string) => void;
 }
 
@@ -16,6 +17,12 @@ const InputCard = (props: inputCardProps) => {
     setInputValue(newValue);
     props.textInputChange(newValue);
   };
+
+  useEffect(() => {
+    if (props.value) {
+      setInputValue(props.value);
+    }
+  });
 
   return (
     <div>
