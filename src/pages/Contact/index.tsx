@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
 import { useQuery, gql } from "@apollo/client";
@@ -38,26 +39,23 @@ const GET_CONTACT = gql`
 `;
 
 const Contact: React.FC = () => {
-  const { data, loading, error } = useQuery<ContactData>(GET_CONTACT, {
-    fetchPolicy: "network-only",
-  });
+  const { data, loading, error } = useQuery<ContactData>(GET_CONTACT, { fetchPolicy: "network-only" });
+
   const [searchValue, setSearchValue] = useState<string>("");
+  const [favContactsVisible, setFavContactsVisible] = useState(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [selectedCards, setSelectedCards] = useState<number[]>([]);
+
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
   };
-
-  const [favContactsVisible, setFavContactsVisible] = useState(true);
   const toggleFavContacts = () => {
     setFavContactsVisible(!favContactsVisible);
   };
+  const itemsPerPage = 10;
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10; // Adjust the number of items per page as needed
-
-  const [selectedCards, setSelectedCards] = useState<number[]>([]);
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>, cardId: number) => {
     e.preventDefault();
-
     if (selectedCards.length >= 5 && !selectedCards.includes(cardId)) {
       // You can show a message or notification here indicating the limit is reached.
       // For example, you can set a state to show a message to the user.
@@ -74,10 +72,6 @@ const Contact: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   const filteredData = data?.contact.filter((contact) =>
     `${contact.first_name} ${contact.last_name}`.toLowerCase().includes(searchValue.toLowerCase())
   );
@@ -92,6 +86,10 @@ const Contact: React.FC = () => {
   const indexOfFirstContact = indexOfLastContact - itemsPerPage;
   const paginatedContacts = remainingContacts?.slice(indexOfFirstContact, indexOfLastContact);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <Container>
@@ -104,7 +102,9 @@ const Contact: React.FC = () => {
           `}
         >
           <SearchBar onSearchChange={handleSearchChange} />
-          <BtnAdd>+</BtnAdd>
+          <Link to={"/create"}>
+            <BtnAdd>+</BtnAdd>
+          </Link>
         </div>
         <SubHeader onClick={toggleFavContacts}>
           Favorite

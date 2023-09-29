@@ -12,7 +12,7 @@ import DetailCard from "../../components/detailCard";
 import Button from "../../components/button";
 import EditIcon from "../../assets/edit-icon.svg";
 import DeleteIcon from "../../assets/delete-icon.svg";
-import InputCard from "../../components/inputCard";
+// import InputCard from "../../components/inputCard";
 
 type Params = {
   id: string;
@@ -142,9 +142,9 @@ const Detail: React.FC = () => {
       </Name>
       {isEditMode ? (
         <div>
-          <InputCard title="First Name" placeHolder="input first name" onInputChange={handleFirstNameChange} />
+          {/* <InputCard title="First Name" placeHolder="input first name" onInputChange={handleFirstNameChange} />
           <InputCard title="Last Name" placeHolder="input last name" onInputChange={handleLastNameChange} />
-          <InputCard title="Phone Number" placeHolder="input phone number" onInputChange={handlePhoneNumberChange} />
+          <InputCard title="Phone Number" placeHolder="input phone number" onInputChange={handlePhoneNumberChange} /> */}
         </div>
       ) : (
         <div>
